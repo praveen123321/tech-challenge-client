@@ -1,0 +1,86 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<div class="restaurant-picker-container">
+    <div class="header">
+
+        <div class="row">
+            <div class="col-sm-10 col-md-10">
+                <p><b>Welcome {{getCurrentUser()}} </b></p>
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <button (click)="logout()">Logout</button>
+            </div>
+        </div>
+    </div>
+    <form #restaurantAddForm="ngForm">
+        <div class="form-group">
+            <label for="restaurant.name">Restaurant Name: </label>
+            <input type="text" id="restaurant.name" [(ngModel)]="restaurant.name" name="restaurant.name"
+                placeholder="Enter Restaurant Name" required>
+        </div>
+        <div class="form-group">
+            <button [disabled]="(restaurantAddForm.form.invalid) ? true : null" style="width: 90%;"
+                (click)="addRestaurant()">Add Restaurant</button>
+        </div>
+    </form>
+
+    <div class="item-list">
+        <div class="row">
+            <div class="col-sm-3 col-md-3">
+            </div>
+            <div class="col-sm-7 col-md-7">
+                <h3>Your Restaurant Choices</h3>
+            </div>
+            <div class="col-sm-2 col-md-2">
+            </div>
+
+        </div>
+        <hr style="border-top: 1px solid #786e6e;">
+        <div class="columns">
+            <ul>
+                <li
+                    *ngFor="let listItem of itemList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)">
+                    {{ listItem.name }}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <hr style="border-top: 1px solid #786e6e;">
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+        </div>
+        <div class="col-sm-2 col-md-2">
+            <button [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">Prev</button>
+        </div>
+        <div class="col-sm-2 col-md-2">
+            <small>Page {{ currentPage }} of {{ totalPages }}</small>
+        </div>
+        <div class="col-sm-2 col-md-2">
+            <button [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">Next</button>
+        </div>
+        <div class="col-sm-2 col-md-2">
+        </div>
+
+    </div>
+    <hr style="border-top: 1px solid #786e6e;">
+
+
+    <form #restaurantPicker="ngForm">
+
+        <button [disabled]="itemList.length < 1" (click)="pickRandomRestaurant()">Pick a Restaurant</button>
+    </form>
+
+    <hr style="border-top: 1px solid #786e6e;">
+
+    <div *ngIf="randomRestaurant.name!==''">
+        <div class="row">
+
+            <div class="col-sm-12 col-md-12">
+                <p> We picked the Restaurant <b>{{ randomRestaurant.name }} </b> for you. </p>
+
+            </div>
+
+        </div>
+    </div>
+</div>
